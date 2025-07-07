@@ -124,7 +124,7 @@ def train():
     train_dataset = ESC50Dataset(
         data_dir=esc50_dir, metadata_file=esc50_dir / "meta"/ "esc50.csv", split = "train", transform=train_transform)
     val_dataset = ESC50Dataset(
-        data_dir=esc50_dir, metadata_file=esc50_dir / "meta"/ "esc50.csv", split = "val", transform=val_transform)
+        data_dir=esc50_dir, metadata_file=esc50_dir / "meta"/ "esc50.csv", split = "test", transform=val_transform)
     
     print(f"Training Samples : {len(train_dataset)}")
     print(f"Val Samples : {len(val_dataset)}")

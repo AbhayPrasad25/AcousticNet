@@ -13,7 +13,7 @@ class ResidualBlock(nn.Module):
         self.conv2 = nn.Conv2d(in_channels, out_channels, 
                                3, padding=1, bias=False)
         ## Batch Normalization Layer 2
-
+        self.bn2 = nn.BatchNorm2d(out_channels)
         self.shortcut = nn.Sequential()
 
         self.use_shortcut = stride != 1 or in_channels != out_channels

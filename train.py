@@ -155,7 +155,7 @@ def train():
         model.train()
         epoch_loss = 0.0
 
-        progress_bar = tqdm(train_dataloader, desc=f'Epocj {epoch+1}/{num_epochs}')
+        progress_bar = tqdm(train_dataloader, desc=f'Epoch {epoch+1}/{num_epochs}')
         for data, target in progress_bar:
             data, target = data.to(device), target.to(device)
 
@@ -197,7 +197,7 @@ def train():
             for data, target in test_dataloader:
                 data, target = data.to(device), target.to(device)
                 outputs = model(data)
-                loss = criterion(data)
+                loss = criterion(outputs, target)
                 val_loss += loss.item()
 
                 _, predicted = torch.max(outputs.data, 1)
@@ -223,7 +223,7 @@ def train():
             }, '/models/best_model.pth')
 
             print('New best model Saved : {accuracy:.2f}%')
-            
+
     writer.close()
     print(f'Training Completed! Best accuracy: {best_accuracy:.2f}%')
 

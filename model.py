@@ -11,7 +11,7 @@ class ResidualBlock(nn.Module):
         self.bn1 = nn.BatchNorm2d(out_channels)
         ## Another Convolutional Layer
         self.conv2 = nn.Conv2d(in_channels, out_channels, 
-                               3, stride, padding=1, bias=False)
+                               3, padding=1, bias=False)
         ## Batch Normalization Layer 2
 
         self.shortcut = nn.Sequential()
@@ -42,11 +42,11 @@ class AudioCNN(nn.Module):
         self.conv1 = nn.Sequential(nn.Conv2d(1, 64, 7,stride = 2, padding=3, bias=False), nn.BatchNorm2d(64), nn.ReLU(inplace=True), nn.MaxPool2d(3, stride=2, padding=1))
         self.layer1 = nn.ModuleList([ResidualBlock(64, 64) for i in range(3)])
         self.layer2 = nn.ModuleList(
-            [ResidualBlock(64 if i == 0 else 128, 128) for i in range(4)])
+            [ResidualBlock(64 if i == 0 else 128, 128, stride=2 if i == 0 else 1) for i in range(4)])
         self.layer3 = nn.ModuleList(
-            [ResidualBlock(128 if i == 0 else 256, 256) for i in range(6)])
+            [ResidualBlock(128 if i == 0 else 256, 256, stride=2 if i == 0 else 1) for i in range(6)])
         self.layer4 = nn.ModuleList(
-            [ResidualBlock(256 if i == 0 else 512, 512) for i in range(3)])
+            [ResidualBlock(256 if i == 0 else 512, 512, stride=2 if i == 0 else 1) for i in range(3)])
         
         self.avgPool = nn.AdaptiveAvgPool2d((1,1))
         self.dropout = nn.Dropout(0.5)

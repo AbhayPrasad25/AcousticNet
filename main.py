@@ -1,4 +1,5 @@
 import base64
+import requests
 import modal
 import torch
 import numpy as np
@@ -63,7 +64,7 @@ class AudioClassifier:
         self.audio_processor = AudioProcessor()
         print("Model Loaded on Enter")
 
-    @modal
+    @modal.fastapi_endpoint(method="POST")
     def inference(self, request: InferenceRequest):
         audio_bytes = base64.b64decode(request.audio_data)
 
@@ -95,7 +96,26 @@ class AudioClassifier:
             "predictions" : predictions
         }
         return reposnse
-    
+
+@app.local_entrypoint()   
+def main():
+    audio_data = sf.read("bark.wav")
+
+    buffer = io.BytesIO()
+    sf.write(buffer, audio_data, 22050, format="WAV")
+    audio_b64 = base64.b64encode(buffer.getvalue()).decode("utf-8")
+    payload = {"audio_data": audio_b64}
+    server = AudioClassifier()
+    url = server.inference.get_web_url()
+    if url is None:
+        raise ValueError("Inference endpoint URL is None.")
+    response = requests.post(url, json = payload)
+    response.raise_for_status()
+
+    result = response.json()
+    print("Top predictions:")
+    for pred in result.get("predtictions", []):
+        print(f"  -{pred['class']} {pred['confidence']:0.2%}")
 
 
         

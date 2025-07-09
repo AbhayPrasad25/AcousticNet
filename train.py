@@ -126,8 +126,8 @@ def train():
     val_dataset = ESC50Dataset(
         data_dir=esc50_dir, metadata_file=esc50_dir / "meta"/ "esc50.csv", split = "test", transform=val_transform)
     
-    print(f"Training Samples : {len(train_dataset)}")
-    print(f"Val Samples : {len(val_dataset)}")
+    print(f"Training samples: {len(train_dataset)}")
+    print(f"Val samples: {len(val_dataset)}")
 
     train_dataloader = DataLoader(train_dataset, batch_size=32, shuffle=True)
     test_dataloader = DataLoader(val_dataset, batch_size=32, shuffle=False)
@@ -138,7 +138,7 @@ def train():
 
     num_epochs = 100
     criterion = nn.CrossEntropyLoss(label_smoothing=0.1)
-    optimizer = optim.AdamW(model.parameters(), lr=0.005, weight_decay=0.01)
+    optimizer = optim.AdamW(model.parameters(), lr=0.0005, weight_decay=0.01)
 
     scheduler = OneCycleLR(
         optimizer,
@@ -183,7 +183,7 @@ def train():
             progress_bar.set_postfix({'Loss': f'{loss.item():.4f}'})
 
         avg_epoch_loss = epoch_loss / len(train_dataloader)
-        writer.add_scalar('/Loss/Train', avg_epoch_loss, epoch)
+        writer.add_scalar('Loss/Train', avg_epoch_loss, epoch)
         writer.add_scalar('Learning_Rate', optimizer.param_groups[0]['lr'], epoch)
 
         # Validation after each epoch
@@ -207,11 +207,11 @@ def train():
         accuracy = 100 * correct / total
         avg_val_loss = val_loss / len(test_dataloader)
 
-        writer.add_scalar('/Loss/Validation', avg_val_loss, epoch)
-        writer.add_scalar('Accuaracy/Validation',accuracy, epoch)
+        writer.add_scalar('Loss/Validation', avg_val_loss, epoch)
+        writer.add_scalar('Accuracy/Validation', accuracy, epoch)
 
         print(
-            f'Epoch {epoch + 1} Loss: {avg_epoch_loss:.4f}, Val Loss: {avg_val_loss:.4f}, Accuracy: {accuracy:.2f}%')
+            f'Epoch {epoch+1} Loss: {avg_epoch_loss:.4f}, Val Loss: {avg_val_loss:.4f}, Accuracy: {accuracy:.2f}%')
         
         if accuracy > best_accuracy:
             best_accuracy = accuracy
@@ -222,10 +222,10 @@ def train():
                 'classes': train_dataset.classes
             }, '/models/best_model.pth')
 
-            print('New best model Saved : {accuracy:.2f}%')
+            print(f'New best model saved: {accuracy:.2f}%')
 
     writer.close()
-    print(f'Training Completed! Best accuracy: {best_accuracy:.2f}%')
+    print(f'Training completed! Best accuracy: {best_accuracy:.2f}%')
 
 
 @app.local_entrypoint()

@@ -1,3 +1,9 @@
+# TensorBoard logs
+tensorboard_logs/
+runs/
+logs/
+*.tfevents.*
+
 # Log files
 *.log
 npm-debug.log*

@@ -140,7 +140,7 @@ class AudioClassifier:
 
 @app.local_entrypoint()
 def main():
-    audio_data, sample_rate = sf.read("bird.wav")
+    audio_data, sample_rate = sf.read("thunder.wav")
 
     buffer = io.BytesIO()
     sf.write(buffer, audio_data, sample_rate, format="WAV")

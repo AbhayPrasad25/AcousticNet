@@ -257,13 +257,6 @@ soundfile>=0.12.0     # Audio file I/O
 - Optimized for environmental sounds (not music or speech)
 - Requires internet connection for Modal deployment
 
-## 🤝 Support & Community
-
-- 🐛 **Bug Reports**: [Create an issue](https://github.com/AbhayPrasad25/AcousticNet/issues)
-- 💡 **Feature Requests**: [Start a discussion](https://github.com/AbhayPrasad25/AcousticNet/discussions)
-- 📧 **Direct Contact**: [Email the maintainer](mailto:your-email@example.com)
-- ⭐ **Star the repo** if you find it useful!
-
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
